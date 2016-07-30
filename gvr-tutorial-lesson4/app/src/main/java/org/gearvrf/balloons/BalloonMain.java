@@ -151,7 +151,7 @@ public class BalloonMain extends GVRMain {
         // object that uses the standard 'unlit' shader)*
         GVRSceneObject sceneObject = new GVRSceneObject(context, 4.0f, 2.0f, texture);
         // set the scene object position*
-        sceneObject.getTransform().setPosition(0.0f, 0.0f, -3.0f);
+        sceneObject.getTransform().setPosition(1.0f, 10.0f, -3.0f);
         GVRSphereCollider collider = new GVRSphereCollider(context);
         sceneObject.attachComponent(collider);
         return sceneObject;

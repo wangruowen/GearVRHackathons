@@ -192,7 +192,7 @@ public class ParticleEmitter extends GVRBehavior
             v.mul(mRandom.nextFloat(), mRandom.nextFloat(), 0);
             v.add(EmitterArea.MinVal.x, EmitterArea.MinVal.y, 0);
         }
-        //Vector3f v = new Vector3f(100*(mRandom.nextFloat()-0.5f), 100*(mRandom.nextFloat()-0.5f), 100*(mRandom.nextFloat()-0.5f));
+        //Vector3f v = new Vector3f(100*(mRandom.nextFloat()-0.5f), 100*(mRandom.nextFloat()-0.5f), 0);
         return v;
     }
 
