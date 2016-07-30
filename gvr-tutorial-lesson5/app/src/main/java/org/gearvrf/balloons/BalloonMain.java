@@ -46,7 +46,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Future;
 
-;
+import org.gearvrf.scene_objects.GVRCameraSceneObject;
 
 public class BalloonMain extends GVRMain {
 
@@ -81,6 +81,13 @@ public class BalloonMain extends GVRMain {
     private Integer     mScore = 0;
 	private Timer		mTimer;
 
+    private BalloonActivity mActivity;
+    private GVRCameraSceneObject cameraObject;
+
+    BalloonMain(BalloonActivity activity) {
+        mActivity = activity;
+    }
+
     @Override
     public void onInit(GVRContext context)
     {
@@ -104,6 +111,15 @@ public class BalloonMain extends GVRMain {
         mScene.getMainCameraRig().getRightCamera().setBackgroundColor(1.0f, 1.0f, 1.0f, 1.0f);
 
         /*
+         * Set the camera passthrough
+         */
+        cameraObject = new GVRCameraSceneObject(
+                context, 7.2f, 4f, mActivity.getCamera());
+        cameraObject.setUpCameraForVrMode(1); // set up 60 fps camera preview.
+        cameraObject.getTransform().setPosition(0.0f, 0.0f, -4.0f);
+        mScene.getMainCameraRig().addChildObject(cameraObject);
+
+        /*
          * Set up a head-tracking pointer
          */
         GVRSceneObject headTracker = new GVRSceneObject(context,
@@ -121,8 +137,8 @@ public class BalloonMain extends GVRMain {
         /*
          * Add the environment
          */
-        GVRSceneObject environment = makeEnvironment(context);
-        mScene.addSceneObject(environment);
+//        GVRSceneObject environment = makeEnvironment(context);
+//        mScene.addSceneObject(environment);
         /*
          * Make balloon prototype sphere mesh
          */
