@@ -79,7 +79,7 @@ public class ParticleEmitter extends GVRBehavior
      */
     public  Range<Vector3f>  Direction = new Range<Vector3f>(new Vector3f(0, 0, 1));
 
-    public  Range<Vector2f> EmitterArea = new Range<Vector2f>(new Vector2f(-5.0f, -5.0f), new Vector2f(5.0f, 5.0f));
+    public  Range<Vector2f> EmitterArea = new Range<Vector2f>(new Vector2f(-15.0f, -15.0f), new Vector2f(-15.0f, 15.0f));
 
     /**
      * Maximum distance of particle from starting point
@@ -137,6 +137,7 @@ public class ParticleEmitter extends GVRBehavior
     {
         float emitTime = 1 / EmissionRate;
         mLastEmitTime += elapsed;
+        /*
         synchronized (mActiveParticles)
         {
             for (Iterator<Particle> iter = mActiveParticles.iterator(); iter.hasNext(); )
@@ -151,6 +152,7 @@ public class ParticleEmitter extends GVRBehavior
                 }
             }
         }
+        */
         if (mLastEmitTime >= emitTime)
         {
             emit();
@@ -182,6 +184,7 @@ public class ParticleEmitter extends GVRBehavior
 
     private Vector3f getNextPosition()
     {
+
         Vector3f v = new Vector3f(EmitterArea.MaxVal.x, EmitterArea.MaxVal.y, 0);
         if (EmitterArea.isRange())
         {
@@ -189,6 +192,7 @@ public class ParticleEmitter extends GVRBehavior
             v.mul(mRandom.nextFloat(), mRandom.nextFloat(), 0);
             v.add(EmitterArea.MinVal.x, EmitterArea.MinVal.y, 0);
         }
+        //Vector3f v = new Vector3f(100*(mRandom.nextFloat()-0.5f), 100*(mRandom.nextFloat()-0.5f), 100*(mRandom.nextFloat()-0.5f));
         return v;
     }
 
