@@ -184,18 +184,38 @@ public class ParticleEmitter extends GVRBehavior
 
     private Vector3f getNextPosition()
     {
+        Vector3f v;
+        do {
+            v = new Vector3f(EmitterArea.MaxVal.x, EmitterArea.MaxVal.y, 0);
+            if (EmitterArea.isRange()) {
+                v.sub(EmitterArea.MinVal.x, EmitterArea.MinVal.y, 0);
+                v.mul(mRandom.nextFloat(), mRandom.nextFloat(), 0);
+                v.add(EmitterArea.MinVal.x, EmitterArea.MinVal.y, 0);
+            }
+        } while (!outOfRange(v, 5.0f));
 
-        Vector3f v = new Vector3f(EmitterArea.MaxVal.x, EmitterArea.MaxVal.y, 0);
-        if (EmitterArea.isRange())
-        {
-            v.sub(EmitterArea.MinVal.x, EmitterArea.MinVal.y, 0);
-            v.mul(mRandom.nextFloat(), mRandom.nextFloat(), 0);
-            v.add(EmitterArea.MinVal.x, EmitterArea.MinVal.y, 0);
-        }
-        v.add(10, 10, 0);
+        //if close to the previous pokemon, re-generate pos to avoid overlap
+
+        Log.e("error ", "EmitterArea" + EmitterArea.MaxVal.toString());
         Log.e("error ", "position" + " x= " + v.toString());
         //Vector3f v = new Vector3f(100*(mRandom.nextFloat()-0.5f), 100*(mRandom.nextFloat()-0.5f), 0);
         return v;
+    }
+
+    private boolean outOfRange(Vector3f curPos, float range){
+        for (Iterator<Particle> iter = mActiveParticles.iterator(); iter.hasNext(); )
+        {
+            Particle particle = iter.next();
+            Vector3f activePos = particle.getPosition();
+            float curDis = curPos.distance(activePos);
+
+            Log.e("error ", "distance " + curDis);
+
+            if (curDis < range) {
+                return false;
+            }
+        }
+        return true;
     }
 
     protected void emit()
