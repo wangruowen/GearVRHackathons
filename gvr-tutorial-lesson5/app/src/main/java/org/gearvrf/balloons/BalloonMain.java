@@ -117,7 +117,8 @@ public class BalloonMain extends GVRMain {
                 context, 7.2f, 4f, mActivity.getCamera());
         cameraObject.setUpCameraForVrMode(1); // set up 60 fps camera preview.
         cameraObject.getTransform().setPosition(0.0f, 0.0f, -4.0f);
-        mScene.getMainCameraRig().addChildObject(cameraObject);
+//        mScene.getMainCameraRig().addChildObject(cameraObject);
+        mScene.addSceneObject(cameraObject);
 
         /*
          * Set up a head-tracking pointer
