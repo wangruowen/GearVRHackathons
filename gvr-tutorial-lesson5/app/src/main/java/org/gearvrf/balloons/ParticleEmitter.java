@@ -14,16 +14,16 @@
  */
 package org.gearvrf.balloons;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Random;
 import org.gearvrf.GVRBehavior;
 import org.gearvrf.GVRContext;
 import org.gearvrf.GVRScene;
 import org.gearvrf.GVRSceneObject;
-import org.gearvrf.utility.Log;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Random;
 
 
 public class ParticleEmitter extends GVRBehavior
@@ -119,8 +119,22 @@ public class ParticleEmitter extends GVRBehavior
         synchronized (mActiveParticles)
         {
             GVRSceneObject owner = particle.getOwnerObject();
+            String sceneObjName = owner.getName();
             owner.setEnable(false);
             mActiveParticles.remove(particle);
+
+            GVRSceneObject sceneObj = null;
+            Vector3f direction = getNextDirection();
+            float velocity = getNextVelocity();
+
+            sceneObj = mMakeParticle.create(getGVRContext());
+            sceneObj.setName(sceneObjName);
+
+            particle = new Particle(getGVRContext(), velocity, direction);
+            sceneObj.attachComponent(particle);
+            getOwnerObject().addChildObject(sceneObj);
+            sceneObj.getRenderData().bindShader(mScene);
+
             mFreeParticles.add(particle);
         }
     }
@@ -146,6 +160,22 @@ public class ParticleEmitter extends GVRBehavior
                 if (particle.Distance > MaxDistance)
                 {
                     iter.remove();
+
+                    GVRSceneObject owner = particle.getOwnerObject();
+                    String sceneObjName = owner.getName();
+
+                    GVRSceneObject sceneObj = null;
+                    Vector3f direction = getNextDirection();
+                    float velocity = getNextVelocity();
+
+                    sceneObj = mMakeParticle.create(getGVRContext());
+                    sceneObj.setName(sceneObjName);
+
+                    particle = new Particle(getGVRContext(), velocity, direction);
+                    sceneObj.attachComponent(particle);
+                    getOwnerObject().addChildObject(sceneObj);
+                    sceneObj.getRenderData().bindShader(mScene);
+
                     mFreeParticles.add(particle);
                     particle.getOwnerObject().setEnable(false);
                 }

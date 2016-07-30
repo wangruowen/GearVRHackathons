@@ -15,38 +15,38 @@
 
 package org.gearvrf.balloons;
 
+import android.graphics.Color;
+import android.media.AudioManager;
+import android.media.SoundPool;
+import android.view.MotionEvent;
+
 import org.gearvrf.GVRAndroidResource;
 import org.gearvrf.GVRContext;
 import org.gearvrf.GVRDirectLight;
+import org.gearvrf.GVRMain;
 import org.gearvrf.GVRMaterial;
 import org.gearvrf.GVRMesh;
-import org.gearvrf.GVRPhongShader;
+import org.gearvrf.GVRPicker;
+import org.gearvrf.GVRPicker.GVRPickedObject;
+import org.gearvrf.GVRRenderData;
 import org.gearvrf.GVRScene;
 import org.gearvrf.GVRSceneObject;
-import org.gearvrf.GVRMain;
-import org.gearvrf.GVRRenderData;
-import org.gearvrf.GVRRenderData.GVRRenderingOrder;
 import org.gearvrf.GVRSphereCollider;
 import org.gearvrf.GVRTexture;
-import org.gearvrf.scene_objects.GVRSphereSceneObject;
-;
-import android.graphics.Color;
-import android.media.AudioManager;
-import android.view.MotionEvent;
-import org.gearvrf.GVRPicker;
 import org.gearvrf.IPickEvents;
-import org.gearvrf.GVRPicker.GVRPickedObject;
+import org.gearvrf.scene_objects.GVRSphereSceneObject;
 import org.gearvrf.scene_objects.GVRTextViewSceneObject;
 import org.gearvrf.utility.Log;
 import org.joml.Vector2f;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Future;
-import java.io.IOException;
-import java.util.Timer;
-import android.media.SoundPool;
+
+;
 
 public class BalloonMain extends GVRMain {
 
@@ -187,20 +187,78 @@ public class BalloonMain extends GVRMain {
 
     GVRSceneObject makeBalloon(GVRContext context)
     {
-        GVRSceneObject balloon = new GVRSceneObject(context, mSphereMesh);
-        GVRRenderData rdata = balloon.getRenderData();
-        GVRSphereCollider collider = new GVRSphereCollider(context);
-        Random rand = new Random();
-        int mtlIndex = rand.nextInt(mMaterials.size() - 1);
+        //String Tag = "makeBalloon";
+        //android.util.Log.e(Tag, "enter make ballon...");
 
-        balloon.setName("balloon");
-        rdata.setShaderTemplate(GVRPhongShader.class);
-        rdata.setAlphaBlend(true);
-        rdata.setMaterial(mMaterials.get(mtlIndex));
-        rdata.setRenderingOrder(GVRRenderingOrder.TRANSPARENT);
-        collider.setRadius(0.8f);
-        balloon.attachComponent(collider);
-        return balloon;
+        String [] pokemon_imgs = new String[] {
+                "Alakazam.png",
+                "Arcanine.png",
+                "ARTICUNO.png",
+                "Blastoise_art.png",
+                "Bulbasaur_art.png",
+                "Celebi.png",
+                "Charizard.png",
+                "Charmander.png",
+                "Deoxys.png",
+                "dragonite.png",
+                "Dratini.png",
+                "Eevee.png",
+                "Electabuzz.png",
+                "Entei244.png",
+                "Exeggutor.png",
+                "Gengar.png",
+                "Giratina487.png",
+                "Golem.png",
+                "Gyarados130.png",
+                "Haunter.png",
+                "Jynx.png",
+                "Koffingandweezing.png",
+                "Lapras.png",
+                "Lucario.png",
+                "Machamp.png",
+                "Magikarp.png",
+                "Meowth.png",
+                "Mewtwo.png",
+                "Mime.png",
+                "Moltres.png",
+                "Mudkip.png",
+                "Omastar.png",
+                "Pikachu.png",
+                "Pinsir.png",
+                "Poliwrath.png",
+                "Psyduck.png",
+                "Rapidash.png",
+                "Rayquaza.png",
+                "Rhydon.png",
+                "Snorlax.png",
+                "Squirtle.png",
+                "Starmie.png",
+                "Sugimoris.png",
+                "Tauros.png",
+                "Tentacruel.png",
+                "Togepi.png",
+                "Vaporeon.png",
+                "Venusaur.png",
+                "Victreebel.png",
+                "Zapdos.png"
+        };
+
+        //android.util.Log.e(Tag, "Calling random...");
+        Random rand = new Random();
+        int img_index = rand.nextInt(50);
+        //android.util.Log.e(Tag, "img_index: " + img_index);
+
+
+
+        GVRTexture texture = context.loadTexture(pokemon_imgs[img_index]);
+        // create a a scene object (this constructor creates a rectangular scene*
+        // object that uses the standard 'unlit' shader)*
+        GVRSceneObject sceneObject = new GVRSceneObject(context, 4.0f, 2.0f, texture);
+        // set the scene object position*
+        sceneObject.getTransform().setPosition(0.0f, 0.0f, -3.0f);
+        GVRSphereCollider collider = new GVRSphereCollider(context);
+        sceneObject.attachComponent(collider);
+        return sceneObject;
     }
 
     GVRSceneObject makeEnvironment(GVRContext context)
