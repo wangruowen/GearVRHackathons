@@ -62,7 +62,7 @@ public class ParticleEmitter extends GVRBehavior
     /**
      * Maximum number of particles active
      */
-    public int  MaxActiveParticles = 20;
+    public int  MaxActiveParticles = 2;
     
     /**
      * Particles emitted per second
@@ -151,6 +151,7 @@ public class ParticleEmitter extends GVRBehavior
     {
         float emitTime = 1 / EmissionRate;
         mLastEmitTime += elapsed;
+        /*
         synchronized (mActiveParticles)
         {
             for (Iterator<Particle> iter = mActiveParticles.iterator(); iter.hasNext(); )
@@ -181,6 +182,7 @@ public class ParticleEmitter extends GVRBehavior
                 }
             }
         }
+        */
         if (mLastEmitTime >= emitTime)
         {
             emit();
