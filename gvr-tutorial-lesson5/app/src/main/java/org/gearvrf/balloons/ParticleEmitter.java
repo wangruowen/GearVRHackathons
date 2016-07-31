@@ -18,7 +18,6 @@ import org.gearvrf.GVRBehavior;
 import org.gearvrf.GVRContext;
 import org.gearvrf.GVRScene;
 import org.gearvrf.GVRSceneObject;
-import org.gearvrf.utility.Log;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
@@ -125,13 +124,11 @@ public class ParticleEmitter extends GVRBehavior
             mActiveParticles.remove(particle);
 
             GVRSceneObject sceneObj = null;
-            Vector3f direction = getNextDirection();
-            float velocity = getNextVelocity();
 
             sceneObj = mMakeParticle.create(getGVRContext());
             sceneObj.setName(sceneObjName);
 
-            particle = new Particle(getGVRContext(), velocity, direction);
+            particle = new Particle(getGVRContext());
             sceneObj.attachComponent(particle);
             getOwnerObject().addChildObject(sceneObj);
             sceneObj.getRenderData().bindShader(mScene);
@@ -191,27 +188,6 @@ public class ParticleEmitter extends GVRBehavior
         }
     }
 
-    private Vector3f getNextDirection()
-    {
-        Vector3f direction = new Vector3f(Direction.MaxVal);
-        if (Direction.isRange())
-        {
-            direction.sub(Direction.MinVal, direction);
-            direction.mul(mRandom.nextFloat());
-            direction.add(Direction.MinVal, direction);
-        }
-        return direction;
-    }
-
-    private float getNextVelocity()
-    {
-        float velocity = Velocity.MinVal;
-        if (Velocity.isRange())
-        {
-            velocity += mRandom.nextFloat() * (Velocity.MaxVal - Velocity.MinVal);
-        }
-        return velocity;
-    }
 
     private Vector3f getNextPosition()
     {
@@ -253,8 +229,11 @@ public class ParticleEmitter extends GVRBehavior
     {
         Particle particle = null;
         GVRSceneObject sceneObj = null;
-        Vector3f direction = getNextDirection();
-        float velocity = getNextVelocity();
+
+        if (mActiveParticles.size() >= MaxActiveParticles)
+        {
+            return; // cannot emit any more
+        }
 
         if (mFreeParticles.size() > 0)
         {
@@ -262,8 +241,6 @@ public class ParticleEmitter extends GVRBehavior
             particle = mFreeParticles.get(last);
             mFreeParticles.remove(last);
             sceneObj = particle.getOwnerObject();
-            particle.Velocity = velocity;
-            particle.Direction = direction;
         }
         else
         {
@@ -271,14 +248,11 @@ public class ParticleEmitter extends GVRBehavior
             {
                 return; // cannot create any more
             }
-            if (mActiveParticles.size() >= MaxActiveParticles)
-            {
-                return; // cannot emit any more
-            }
+
             sceneObj = mMakeParticle.create(getGVRContext());
             sceneObj.setName(sceneObj.getName() + Integer.valueOf(mNumParticles).toString());
             ++mNumParticles;
-            particle = new Particle(getGVRContext(), velocity, direction);
+            particle = new Particle(getGVRContext());
             sceneObj.attachComponent(particle);
             getOwnerObject().addChildObject(sceneObj);
             sceneObj.getRenderData().bindShader(mScene);
