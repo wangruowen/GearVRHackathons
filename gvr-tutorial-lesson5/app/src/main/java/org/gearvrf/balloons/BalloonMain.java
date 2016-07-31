@@ -34,6 +34,7 @@ import org.gearvrf.GVRSceneObject;
 import org.gearvrf.GVRSphereCollider;
 import org.gearvrf.GVRTexture;
 import org.gearvrf.IPickEvents;
+import org.gearvrf.scene_objects.GVRCameraSceneObject;
 import org.gearvrf.scene_objects.GVRSphereSceneObject;
 import org.gearvrf.scene_objects.GVRTextViewSceneObject;
 import org.gearvrf.utility.Log;
@@ -45,8 +46,6 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Future;
-
-import org.gearvrf.scene_objects.GVRCameraSceneObject;
 
 public class BalloonMain extends GVRMain {
 
@@ -197,61 +196,36 @@ public class BalloonMain extends GVRMain {
         //android.util.Log.e(Tag, "enter make ballon...");
 
         String [] pokemon_imgs = new String[] {
-                "Alakazam.png",
-                "Arcanine.png",
-                "ARTICUNO.png",
-                "Blastoise_art.png",
-                "Bulbasaur_art.png",
-                "Celebi.png",
+                "amphaos.png",
+                "bulbashar.png",
                 "Charizard.png",
-                "Charmander.png",
-                "Deoxys.png",
-                "dragonite.png",
-                "Dratini.png",
-                "Eevee.png",
-                "Electabuzz.png",
-                "Entei244.png",
-                "Exeggutor.png",
-                "Gengar.png",
-                "Giratina487.png",
-                "Golem.png",
-                "Gyarados130.png",
-                "Haunter.png",
-                "Jynx.png",
-                "Koffingandweezing.png",
-                "Lapras.png",
-                "Lucario.png",
-                "Machamp.png",
-                "Magikarp.png",
-                "Meowth.png",
-                "Mewtwo.png",
-                "Mime.png",
-                "Moltres.png",
-                "Mudkip.png",
-                "Omastar.png",
-                "Pikachu.png",
-                "Pinsir.png",
-                "Poliwrath.png",
-                "Psyduck.png",
-                "Rapidash.png",
-                "Rayquaza.png",
-                "Rhydon.png",
-                "Snorlax.png",
-                "Squirtle.png",
-                "Starmie.png",
-                "Sugimoris.png",
-                "Tauros.png",
+                "charmander.png",
+                "Coolfeatures.png",
+                "cresselia.png",
+                "evee2.png",
+                "fly.png",
+                "genesect.png",
+                "Ivysaur.png",
+                "Jigglypuff.png",
+                "Landourous.png",
+                "lurario.png",
+                "meloetta.png",
+                "meowth.png",
+                "Ninetales_3d.png",
+                "pikachu.png",
+                "Seedot.png",
+                "snorlax.png",
+                "squirtle.png",
                 "Tentacruel.png",
-                "Togepi.png",
-                "Vaporeon.png",
-                "Venusaur.png",
-                "Victreebel.png",
-                "Zapdos.png"
+                "tornadus.png",
+                "tyranitar.png",
+                "unicorn.png",
+                "Victini.png"
         };
 
         //android.util.Log.e(Tag, "Calling random...");
         Random rand = new Random();
-        int img_index = rand.nextInt(50);
+        int img_index = rand.nextInt(25);
         //android.util.Log.e(Tag, "img_index: " + img_index);
 
 
