@@ -322,7 +322,7 @@ public class BalloonMain extends GVRMain {
         {
             mPopSound.play();
             mParticleSystem.stop(particle);
-            mScore += Math.round(particle.Velocity);
+            mScore ++;
             mScoreBoard.setText("Score: " + mScore.toString());
         }
     }

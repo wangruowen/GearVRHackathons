@@ -223,7 +223,7 @@ public class ParticleEmitter extends GVRBehavior
                 v.mul(mRandom.nextFloat(), mRandom.nextFloat(), 0);
                 v.add(EmitterArea.MinVal.x, EmitterArea.MinVal.y, 0);
             }
-        } while (!outOfRange(v, 5.0f));
+        } while (!outOfRange(v, 2.0f));
 
         //if close to the previous pokemon, re-generate pos to avoid overlap
 
