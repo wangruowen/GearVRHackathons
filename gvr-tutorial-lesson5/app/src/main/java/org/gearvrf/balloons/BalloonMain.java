@@ -17,7 +17,9 @@ package org.gearvrf.balloons;
 
 import android.graphics.Color;
 import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.media.SoundPool;
+import android.provider.MediaStore;
 import android.view.MotionEvent;
 
 import org.gearvrf.GVRAndroidResource;
@@ -75,6 +77,7 @@ public class BalloonMain extends GVRMain {
     private Random      mRandom = new Random();
     private SoundPool   mAudioEngine;
     private SoundEffect mPopSound;
+    private static MediaPlayer sMediaPlayer;
     private GVRTextViewSceneObject mScoreBoard;
     private boolean     mGameOver = false;
     private Integer     mScore = 0;
@@ -209,6 +212,12 @@ public class BalloonMain extends GVRMain {
 		mTimer.schedule(gameOver, oneMinute);
     }
 
+    @Override
+    public void onAfterInit() {
+        sMediaPlayer = MediaPlayer.create(getGVRContext().getContext(), R.raw.backgroundmusic);
+        sMediaPlayer.setLooping(true);
+        sMediaPlayer.start();
+    }
     public void gameOver()
     {
         mParticleSystem.setEnable(false);
