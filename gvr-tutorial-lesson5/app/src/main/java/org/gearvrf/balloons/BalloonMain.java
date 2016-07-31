@@ -179,7 +179,7 @@ public class BalloonMain extends GVRMain {
 			public void run() { gameOver(); }
 		};
 		long oneMinute = 60 * 1000;
-		mTimer.schedule(gameOver, oneMinute);
+		mTimer.schedule(gameOver, 2*oneMinute);
     }
 
     public void gameOver()
@@ -189,16 +189,6 @@ public class BalloonMain extends GVRMain {
         mScoreBoard.setBackgroundColor(Color.RED);
         mScoreBoard.setText(mScoreBoard.getTextString() + "\nGame Over");
         mGameOver = true;
-    }
-
-    public void gameStart()
-    {
-        mScoreBoard.getTransform().setPosition(-1.2f, 1.2f, -3.0f);
-        mScoreBoard.setBackgroundColor(Color.TRANSPARENT);
-        mScore = 0;
-        mScoreBoard.setText("Score: 0");
-        mGameOver = false;
-        mParticleSystem.setEnable(true);
     }
 
     GVRSceneObject makeBalloon(GVRContext context)
@@ -323,8 +313,8 @@ public class BalloonMain extends GVRMain {
     {
         GVRTextViewSceneObject scoreBoard = new GVRTextViewSceneObject(ctx, 3, 0.5f, "Score: 0");
         GVRRenderData rdata = scoreBoard.getRenderData();
-        scoreBoard.getTransform().setPosition(-1.2f, 1.2f, -3.0f);
-        scoreBoard.setTextColor(Color.YELLOW);
+        scoreBoard.getTransform().setPosition(0.5f, 3.2f, -3.0f);
+        scoreBoard.setTextColor(Color.BLACK);
         scoreBoard.setBackgroundColor(Color.TRANSPARENT);
 
         return scoreBoard;
