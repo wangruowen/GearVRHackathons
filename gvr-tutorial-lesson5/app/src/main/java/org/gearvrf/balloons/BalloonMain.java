@@ -206,15 +206,15 @@ public class BalloonMain extends GVRMain {
 			public void run() { gameOver(); }
 		};
 		long oneMinute = 60 * 1000;
-		mTimer.schedule(gameOver, 2*oneMinute);
+		mTimer.schedule(gameOver, oneMinute);
     }
 
     public void gameOver()
     {
         mParticleSystem.setEnable(false);
-        mScoreBoard.getTransform().setPosition(0, 0, -2);
+        //mScoreBoard.getTransform().setPosition(0, 0, -2);
         mScoreBoard.setBackgroundColor(Color.RED);
-        mScoreBoard.setText(mScoreBoard.getTextString() + "\nGame Over");
+        mScoreBoard.setText(mScoreBoard.getTextString() + " Time's Up");
         mGameOver = true;
     }
 
@@ -233,7 +233,7 @@ public class BalloonMain extends GVRMain {
         GVRTexture texture = context.loadTexture(pokemon_imgs[index]);
         // create a a scene object (this constructor creates a rectangular scene*
         // object that uses the standard 'unlit' shader)*
-        GVRSceneObject sceneObject = new GVRSceneObject(context, 2.0f, 4.0f, texture);
+        GVRSceneObject sceneObject = new GVRSceneObject(context, 2.0f, 2.0f, texture);
         // set the scene object position*
         sceneObject.getTransform().setPosition(0.0f, 0.0f, -3.0f);
         GVRSphereCollider collider = new GVRSphereCollider(context);
@@ -285,9 +285,9 @@ public class BalloonMain extends GVRMain {
      */
     GVRTextViewSceneObject makeScoreboard(GVRContext ctx)
     {
-        GVRTextViewSceneObject scoreBoard = new GVRTextViewSceneObject(ctx, 3, 0.5f, "Score: 0");
+        GVRTextViewSceneObject scoreBoard = new GVRTextViewSceneObject(ctx, 5, 0.7f, "Score: 0");
         GVRRenderData rdata = scoreBoard.getRenderData();
-        scoreBoard.getTransform().setPosition(0.5f, 1.6f, -3.0f);
+        scoreBoard.getTransform().setPosition(0.3f, 1.8f, -3.0f);
         scoreBoard.setTextColor(Color.BLACK);
         scoreBoard.setBackgroundColor(Color.TRANSPARENT);
 

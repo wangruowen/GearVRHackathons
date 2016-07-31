@@ -64,7 +64,7 @@ public class ParticleEmitter extends GVRBehavior
     /**
      * Total number of particles
      */
-    public final int TotalParticles = 50;
+    public final int TotalParticles = 500;
     
     /**
      * Maximum number of particles active
