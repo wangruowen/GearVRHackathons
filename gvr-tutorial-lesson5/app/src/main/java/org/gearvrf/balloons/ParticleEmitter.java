@@ -128,7 +128,6 @@ public class ParticleEmitter extends GVRBehavior
             GVRSceneObject owner = particle.getOwnerObject();
             owner.setEnable(false);
             mActiveParticles.remove(particle);
-
             mFreeParticles.add(particle);
 
         }
@@ -154,27 +153,6 @@ public class ParticleEmitter extends GVRBehavior
         }
     }
 
-    private Vector3f getNextDirection()
-    {
-        Vector3f direction = new Vector3f(Direction.MaxVal);
-        if (Direction.isRange())
-        {
-            direction.sub(Direction.MinVal, direction);
-            direction.mul(mRandom.nextFloat());
-            direction.add(Direction.MinVal, direction);
-        }
-        return direction;
-    }
-
-    private float getNextVelocity()
-    {
-        float velocity = Velocity.MinVal;
-        if (Velocity.isRange())
-        {
-            velocity += mRandom.nextFloat() * (Velocity.MaxVal - Velocity.MinVal);
-        }
-        return velocity;
-    }
 
     private Vector3f getNextPosition()
     {
@@ -186,7 +164,7 @@ public class ParticleEmitter extends GVRBehavior
                 v.mul(mRandom.nextFloat(), mRandom.nextFloat(), 0);
                 v.add(EmitterArea.MinVal.x, EmitterArea.MinVal.y, 0);
             }
-        } while (!outOfRange(v, 5.0f));
+        } while (!outOfRange(v, 2.0f));
 
         //if close to the previous pokemon, re-generate pos to avoid overlap
 
@@ -217,19 +195,16 @@ public class ParticleEmitter extends GVRBehavior
     {
         Particle particle = null;
         GVRSceneObject sceneObj = null;
-        Vector3f direction = getNextDirection();
-        float velocity = getNextVelocity();
+
+
         String TAG = "xun";
         if (mFreeParticles.size() == 0) {
             Log.e(TAG, "initialize mFreeParticles");
             for(int i=0; i<TotalPokemons; i++){
-                direction = getNextDirection();
-                velocity = getNextVelocity();
-
                 sceneObj = mMakeParticle.create(getGVRContext(), i);
                 sceneObj.setEnable(false);
                 sceneObj.setName(sceneObj.getName() + Integer.valueOf(i).toString());
-                particle = new Particle(getGVRContext(), velocity, direction);
+                particle = new Particle(getGVRContext());
                 sceneObj.attachComponent(particle);
                 getOwnerObject().addChildObject(sceneObj);
                 sceneObj.getRenderData().bindShader(mScene);

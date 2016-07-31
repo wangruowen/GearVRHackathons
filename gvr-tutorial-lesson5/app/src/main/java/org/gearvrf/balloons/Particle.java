@@ -10,17 +10,13 @@ import org.joml.Vector3f;
 class Particle extends GVRBehavior
 {
     static private long TYPE_PARTICLE = newComponentType(org.gearvrf.balloons.Particle.class);
-    public float            Velocity;
-    public Vector3f         Direction;
     public float            Distance;
     private Vector3f        mStartPos = new Vector3f(0, 0, 0);
     private Vector3f        mCurPos = new Vector3f(0, 0, 0);
     
-    Particle(GVRContext ctx, float velocity, Vector3f direction)
+    Particle(GVRContext ctx)
     {
         super(ctx);
-        Velocity = velocity;
-        Direction = direction;
         mType = TYPE_PARTICLE;
     }
 
@@ -53,21 +49,5 @@ class Particle extends GVRBehavior
         mStartPos.x = mCurPos.x;
         mStartPos.y = mCurPos.y;
         mStartPos.z = mCurPos.z;
-    }
-    
-    public void move(float time)
-    {
-        GVRSceneObject owner = getOwnerObject();
-        
-        if (owner == null)
-        {
-            return;
-        }
-        getPosition();
-        mCurPos.x += Direction.x * Velocity * time;
-        mCurPos.y += Direction.y * Velocity * time;
-        mCurPos.z += Direction.z * Velocity * time;
-        owner.getTransform().setPosition(mCurPos.x, mCurPos.y, mCurPos.z);;
-        Distance = mCurPos.sub(mStartPos, mCurPos).length();
     }
 }
