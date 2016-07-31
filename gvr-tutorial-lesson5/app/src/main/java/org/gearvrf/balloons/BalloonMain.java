@@ -296,7 +296,6 @@ public class BalloonMain extends GVRMain {
 
     @Override
     public void onStep() {
-        FPSCounter.tick();
     }
 
     public void onTouchEvent(MotionEvent event)
