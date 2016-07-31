@@ -83,6 +83,34 @@ public class BalloonMain extends GVRMain {
     private BalloonActivity mActivity;
     private GVRCameraSceneObject cameraObject;
 
+    private String [] pokemon_imgs = new String[] {
+            "amphaos.png",
+            "bulbashar.png",
+            "Charizard.png",
+            "charmander.png",
+            "Coolfeatures.png",
+            "cresselia.png",
+            "evee2.png",
+            "fly.png",
+            "genesect.png",
+            "Ivysaur.png",
+            "Jigglypuff.png",
+            "Landourous.png",
+            "lurario.png",
+            "meloetta.png",
+            "meowth.png",
+            "Ninetales_3d.png",
+            "pikachu.png",
+            "Seedot.png",
+            "snorlax.png",
+            "squirtle.png",
+            "Tentacruel.png",
+            "tornadus.png",
+            "tyranitar.png",
+            "unicorn.png",
+            "Victini.png"
+    };
+
     BalloonMain(BalloonActivity activity) {
         mActivity = activity;
     }
@@ -151,12 +179,12 @@ public class BalloonMain extends GVRMain {
         particleRoot.setName("ParticleSystem");
         ParticleEmitter.MakeParticle particleCreator = new ParticleEmitter.MakeParticle()
         {
-            public GVRSceneObject create(GVRContext context) { return makeBalloon(context); }
+            public GVRSceneObject create(GVRContext context, Integer index) { return makeBalloon(context, index); }
         };
         mParticleSystem = new ParticleEmitter(context, mScene, particleCreator);
         mParticleSystem.MaxDistance = 10.0f;
-        mParticleSystem.TotalParticles = 10;
-        mParticleSystem.EmissionRate = 3;
+        //mParticleSystem.TotalParticles = 10;
+        //mParticleSystem.EmissionRate = 3;
         mParticleSystem.Velocity = new ParticleEmitter.Range<Float>(2.0f, 6.0f);
         mParticleSystem.EmitterArea = new ParticleEmitter.Range<Vector2f>(new Vector2f(-5.0f, -2.0f), new Vector2f(5.0f, 2.0f));
         particleRoot.getTransform().setRotationByAxis(-90.0f, 1, 0, 0);
@@ -190,47 +218,19 @@ public class BalloonMain extends GVRMain {
         mGameOver = true;
     }
 
-    GVRSceneObject makeBalloon(GVRContext context)
+    GVRSceneObject makeBalloon(GVRContext context, Integer index)
     {
         //String Tag = "makeBalloon";
         //android.util.Log.e(Tag, "enter make ballon...");
 
-        String [] pokemon_imgs = new String[] {
-                "amphaos.png",
-                "bulbashar.png",
-                "Charizard.png",
-                "charmander.png",
-                "Coolfeatures.png",
-                "cresselia.png",
-                "evee2.png",
-                "fly.png",
-                "genesect.png",
-                "Ivysaur.png",
-                "Jigglypuff.png",
-                "Landourous.png",
-                "lurario.png",
-                "meloetta.png",
-                "meowth.png",
-                "Ninetales_3d.png",
-                "pikachu.png",
-                "Seedot.png",
-                "snorlax.png",
-                "squirtle.png",
-                "Tentacruel.png",
-                "tornadus.png",
-                "tyranitar.png",
-                "unicorn.png",
-                "Victini.png"
-        };
-
         //android.util.Log.e(Tag, "Calling random...");
-        Random rand = new Random();
-        int img_index = rand.nextInt(25);
+        //Random rand = new Random();
+        //int img_index = rand.nextInt(25);
         //android.util.Log.e(Tag, "img_index: " + img_index);
 
 
 
-        GVRTexture texture = context.loadTexture(pokemon_imgs[img_index]);
+        GVRTexture texture = context.loadTexture(pokemon_imgs[index]);
         // create a a scene object (this constructor creates a rectangular scene*
         // object that uses the standard 'unlit' shader)*
         GVRSceneObject sceneObject = new GVRSceneObject(context, 4.0f, 2.0f, texture);
@@ -322,7 +322,7 @@ public class BalloonMain extends GVRMain {
         {
             mPopSound.play();
             mParticleSystem.stop(particle);
-            mScore += Math.round(particle.Velocity);
+            ++mScore;
             mScoreBoard.setText("Score: " + mScore.toString());
         }
     }

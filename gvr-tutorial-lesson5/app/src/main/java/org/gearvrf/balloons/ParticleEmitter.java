@@ -14,11 +14,12 @@
  */
 package org.gearvrf.balloons;
 
+import android.util.Log;
+
 import org.gearvrf.GVRBehavior;
 import org.gearvrf.GVRContext;
 import org.gearvrf.GVRScene;
 import org.gearvrf.GVRSceneObject;
-import org.gearvrf.utility.Log;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
@@ -52,23 +53,28 @@ public class ParticleEmitter extends GVRBehavior
 
     public interface MakeParticle
     {
-        GVRSceneObject create(GVRContext ctx);
+        GVRSceneObject create(GVRContext ctx, Integer index);
     }
-    
+
+    /**
+     * Total number of Pokemons
+     */
+    public final int TotalPokemons = 25;
+
     /**
      * Total number of particles
      */
-    public int TotalParticles = 50;
+    public final int TotalParticles = 50;
     
     /**
      * Maximum number of particles active
      */
-    public int  MaxActiveParticles = 2;
+    public final int  MaxActiveParticles = 2;
     
     /**
      * Particles emitted per second
      */
-    public float  EmissionRate = 2;
+    public final float  EmissionRate = 2;
     
     /**
      * Velocity range of particle emitted in units per second
@@ -120,23 +126,11 @@ public class ParticleEmitter extends GVRBehavior
         synchronized (mActiveParticles)
         {
             GVRSceneObject owner = particle.getOwnerObject();
-            String sceneObjName = owner.getName();
             owner.setEnable(false);
             mActiveParticles.remove(particle);
 
-            GVRSceneObject sceneObj = null;
-            Vector3f direction = getNextDirection();
-            float velocity = getNextVelocity();
-
-            sceneObj = mMakeParticle.create(getGVRContext());
-            sceneObj.setName(sceneObjName);
-
-            particle = new Particle(getGVRContext(), velocity, direction);
-            sceneObj.attachComponent(particle);
-            getOwnerObject().addChildObject(sceneObj);
-            sceneObj.getRenderData().bindShader(mScene);
-
             mFreeParticles.add(particle);
+
         }
     }
 
@@ -152,38 +146,7 @@ public class ParticleEmitter extends GVRBehavior
     {
         float emitTime = 1 / EmissionRate;
         mLastEmitTime += elapsed;
-        /*
-        synchronized (mActiveParticles)
-        {
-            for (Iterator<Particle> iter = mActiveParticles.iterator(); iter.hasNext(); )
-            {
-                Particle particle = iter.next();
-                particle.move(elapsed);
-                if (particle.Distance > MaxDistance)
-                {
-                    iter.remove();
 
-                    GVRSceneObject owner = particle.getOwnerObject();
-                    String sceneObjName = owner.getName();
-
-                    GVRSceneObject sceneObj = null;
-                    Vector3f direction = getNextDirection();
-                    float velocity = getNextVelocity();
-
-                    sceneObj = mMakeParticle.create(getGVRContext());
-                    sceneObj.setName(sceneObjName);
-
-                    particle = new Particle(getGVRContext(), velocity, direction);
-                    sceneObj.attachComponent(particle);
-                    getOwnerObject().addChildObject(sceneObj);
-                    sceneObj.getRenderData().bindShader(mScene);
-
-                    mFreeParticles.add(particle);
-                    particle.getOwnerObject().setEnable(false);
-                }
-            }
-        }
-        */
         if (mLastEmitTime >= emitTime)
         {
             emit();
@@ -228,6 +191,7 @@ public class ParticleEmitter extends GVRBehavior
         //if close to the previous pokemon, re-generate pos to avoid overlap
 
         //Log.e("error ", "EmitterArea" + EmitterArea.MaxVal.toString());
+
         //Log.e("error ", "position" + " x= " + v.toString());
         //Vector3f v = new Vector3f(100*(mRandom.nextFloat()-0.5f), 100*(mRandom.nextFloat()-0.5f), 0);
         return v;
@@ -255,36 +219,46 @@ public class ParticleEmitter extends GVRBehavior
         GVRSceneObject sceneObj = null;
         Vector3f direction = getNextDirection();
         float velocity = getNextVelocity();
+        String TAG = "xun";
+        if (mFreeParticles.size() == 0) {
+            Log.e(TAG, "initialize mFreeParticles");
+            for(int i=0; i<TotalPokemons; i++){
+                direction = getNextDirection();
+                velocity = getNextVelocity();
 
-        if (mFreeParticles.size() > 0)
-        {
-            int last = mFreeParticles.size() - 1;
-            particle = mFreeParticles.get(last);
-            mFreeParticles.remove(last);
-            sceneObj = particle.getOwnerObject();
-            particle.Velocity = velocity;
-            particle.Direction = direction;
-        }
-        else
-        {
-            if (mNumParticles >= TotalParticles)
-            {
-                return; // cannot create any more
+                sceneObj = mMakeParticle.create(getGVRContext(), i);
+                sceneObj.setEnable(false);
+                sceneObj.setName(sceneObj.getName() + Integer.valueOf(i).toString());
+                particle = new Particle(getGVRContext(), velocity, direction);
+                sceneObj.attachComponent(particle);
+                getOwnerObject().addChildObject(sceneObj);
+                sceneObj.getRenderData().bindShader(mScene);
+
+                mFreeParticles.add(particle);
             }
-            if (mActiveParticles.size() >= MaxActiveParticles)
-            {
-                return; // cannot emit any more
-            }
-            sceneObj = mMakeParticle.create(getGVRContext());
-            sceneObj.setName(sceneObj.getName() + Integer.valueOf(mNumParticles).toString());
-            ++mNumParticles;
-            particle = new Particle(getGVRContext(), velocity, direction);
-            sceneObj.attachComponent(particle);
-            getOwnerObject().addChildObject(sceneObj);
-            sceneObj.getRenderData().bindShader(mScene);
         }
+
+
+        //Log.e(TAG, "before emit actually starts... mFreeParticles.size(): " + mFreeParticles + ", mNumParticles: " + mNumParticles);
+        if (mNumParticles >= TotalParticles) {
+            //Log.e(TAG, "cannot create any more");
+            return; // cannot create any more
+        }
+        if (mActiveParticles.size() >= MaxActiveParticles) {
+            //Log.e(TAG, "cannot emit any more");
+            return; // cannot emit any more
+        }
+
+        int fetch_index = mRandom.nextInt(mFreeParticles.size());
+        particle = mFreeParticles.get(fetch_index);
+        mFreeParticles.remove(fetch_index);
+        
+        ++mNumParticles;
+
         particle.setPosition(getNextPosition());
         mActiveParticles.add(particle);
-        sceneObj.setEnable(true);
+        //Log.e(TAG, "particle added to mActiveParticles");
+        GVRSceneObject owner = particle.getOwnerObject();
+        owner.setEnable(true);
     }
  }
