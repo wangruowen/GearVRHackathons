@@ -114,9 +114,9 @@ public class BalloonMain extends GVRMain {
          * Set the camera passthrough
          */
         cameraObject = new GVRCameraSceneObject(
-                context, 25.2f, 14f, mActivity.getCamera());
+                context, 18f, 10f, mActivity.getCamera());
         cameraObject.setUpCameraForVrMode(1); // set up 60 fps camera preview.
-        cameraObject.getTransform().setPosition(0.0f, 0.0f, -10.0f);
+        cameraObject.getTransform().setPosition(0.0f, -1.8f, -10.0f);
         mScene.getMainCameraRig().addChildObject(cameraObject);
 
         /*
@@ -313,7 +313,7 @@ public class BalloonMain extends GVRMain {
     {
         GVRTextViewSceneObject scoreBoard = new GVRTextViewSceneObject(ctx, 3, 0.5f, "Score: 0");
         GVRRenderData rdata = scoreBoard.getRenderData();
-        scoreBoard.getTransform().setPosition(0.5f, 3.2f, -3.0f);
+        scoreBoard.getTransform().setPosition(0.5f, 1.6f, -3.0f);
         scoreBoard.setTextColor(Color.BLACK);
         scoreBoard.setBackgroundColor(Color.TRANSPARENT);
 
