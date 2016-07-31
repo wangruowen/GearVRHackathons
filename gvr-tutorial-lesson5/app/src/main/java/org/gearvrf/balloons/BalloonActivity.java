@@ -43,6 +43,8 @@ public class BalloonActivity extends GVRActivity {
 
     @Override
     protected void onPause() {
+        if (BalloonMain.sMediaPlayer != null)
+            BalloonMain.sMediaPlayer.pause();
         super.onPause();
         if (camera != null) {
             camera.setPreviewCallback(null);
@@ -56,6 +58,8 @@ public class BalloonActivity extends GVRActivity {
     protected void onResume() {
         super.onResume();
         createCameraView();
+        if (BalloonMain.sMediaPlayer != null)
+            BalloonMain.sMediaPlayer.start();
     }
 
     @Override

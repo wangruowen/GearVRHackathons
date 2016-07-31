@@ -77,7 +77,7 @@ public class BalloonMain extends GVRMain {
     private Random      mRandom = new Random();
     private SoundPool   mAudioEngine;
     private SoundEffect mPopSound;
-    private static MediaPlayer sMediaPlayer;
+    public static MediaPlayer sMediaPlayer;
     private GVRTextViewSceneObject mScoreBoard;
     private boolean     mGameOver = false;
     private Integer     mScore = 0;
@@ -218,6 +218,7 @@ public class BalloonMain extends GVRMain {
         sMediaPlayer.setLooping(true);
         sMediaPlayer.start();
     }
+
     public void gameOver()
     {
         mParticleSystem.setEnable(false);
