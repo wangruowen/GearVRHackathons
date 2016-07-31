@@ -233,7 +233,7 @@ public class BalloonMain extends GVRMain {
         GVRTexture texture = context.loadTexture(pokemon_imgs[index]);
         // create a a scene object (this constructor creates a rectangular scene*
         // object that uses the standard 'unlit' shader)*
-        GVRSceneObject sceneObject = new GVRSceneObject(context, 4.0f, 2.0f, texture);
+        GVRSceneObject sceneObject = new GVRSceneObject(context, 2.0f, 4.0f, texture);
         // set the scene object position*
         sceneObject.getTransform().setPosition(0.0f, 0.0f, -3.0f);
         GVRSphereCollider collider = new GVRSphereCollider(context);
@@ -296,7 +296,6 @@ public class BalloonMain extends GVRMain {
 
     @Override
     public void onStep() {
-        FPSCounter.tick();
     }
 
     public void onTouchEvent(MotionEvent event)
